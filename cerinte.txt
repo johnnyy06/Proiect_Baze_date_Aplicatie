@@ -1,0 +1,16 @@
+								Sistem de gestiune pentru firme de transport
+
+
+	Planificarea rutelor de transport, gestionarea flotei de vehicule, monitorizarea in timp real a vehiculelor cu GPS, generarea de rapoarte pentru consumul de combustibil.
+
+
+
+	Sofer, Manager
+
+
+
+in Views pun toate ferestrele (front-end -> interfetele)
+
+in ViewModels pun logica din spatele ferestrelor (back-end)
+
+in Models pun toate clasele pe care le formez (ex: user, curse, marfuri etc.)

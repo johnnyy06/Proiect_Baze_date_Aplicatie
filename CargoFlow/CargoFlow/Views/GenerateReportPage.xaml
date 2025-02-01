@@ -1,0 +1,94 @@
+﻿<Page x:Class="CargoFlow.Views.GenerateReportPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      Title="Generate Report">
+
+    <Grid Margin="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <!-- Header -->
+        <TextBlock Text="Generate Report" 
+                   FontSize="24" 
+                   FontWeight="Bold"
+                   FontFamily="Montserrat"
+                   Foreground="#D3D3D3"
+                   Margin="0,0,0,20"/>
+
+        <!-- Report Form -->
+        <ScrollViewer Grid.Row="1">
+            <StackPanel Margin="0,0,0,20">
+                <!-- Route Selection -->
+                <TextBlock Text="Select Route:"
+                          Foreground="#D3D3D3"
+                          FontFamily="Montserrat"
+                          Margin="0,0,0,5"/>
+                <ComboBox ItemsSource="{Binding AvailableRoutes}"
+                         SelectedItem="{Binding SelectedRoute}"
+                         Margin="0,0,0,15"
+                         Background="#3D3D3D"
+                         Foreground="Black"
+                         FontFamily="Montserrat">
+                    <ComboBox.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock>
+                                <Run Text="{Binding Route.RouteName}"/>
+                                <Run Text=" ("/>
+                                <Run Text="{Binding EstimatedStartTime, StringFormat=\{0:dd/MM/yyyy\}}"/>
+                                <Run Text=")"/>
+                            </TextBlock>
+                        </DataTemplate>
+                    </ComboBox.ItemTemplate>
+                </ComboBox>
+
+                <!-- Report Type -->
+                <TextBlock Text="Report Type:"
+                          Foreground="#D3D3D3"
+                          FontFamily="Montserrat"
+                          Margin="0,0,0,5"/>
+                <ComboBox SelectedValue="{Binding ReportType}"
+                         SelectedValuePath="Content"
+                         Background="#3D3D3D"
+                         Foreground="Black"
+                         FontFamily="Montserrat"
+                         Margin="0,0,0,15">
+                    <ComboBoxItem Content="Fuel"/>
+                    <ComboBoxItem Content="Route"/>
+                    <ComboBoxItem Content="Maintenance"/>
+                    <ComboBoxItem Content="Performance"/>
+                </ComboBox>
+
+                <!-- Additional Notes -->
+                <TextBlock Text="Additional Notes:"
+                          Foreground="#D3D3D3"
+                          FontFamily="Montserrat"
+                          Margin="0,0,0,5"/>
+                <TextBox Text="{Binding Content}"
+                         Height="100"
+                         TextWrapping="Wrap"
+                         AcceptsReturn="True"
+                         Margin="0,0,0,15"
+                         Background="#3D3D3D"
+                         Foreground="White"
+                         FontFamily="Montserrat"
+                         Padding="5"/>
+            </StackPanel>
+        </ScrollViewer>
+
+        <!-- Buttons -->
+        <StackPanel Grid.Row="2" 
+                    Orientation="Horizontal" 
+                    HorizontalAlignment="Right">
+            <Button Content="Generate Report"
+                    Command="{Binding GenerateReportCommand}"
+                    Style="{StaticResource ModernButton}"
+                    Margin="0,0,10,0"/>
+            <Button Content="Export PDF"
+                    Command="{Binding ExportPdfCommand}"
+                    Style="{StaticResource ModernButton}"/>
+        </StackPanel>
+    </Grid>
+</Page>

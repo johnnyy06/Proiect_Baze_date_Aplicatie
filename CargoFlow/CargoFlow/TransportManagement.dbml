@@ -1,0 +1,86 @@
+﻿<?xml version="1.0" encoding="utf-8"?><Database Name="TransportManagement" Class="TransportManagementDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
+  <Connection Mode="AppSettings" ConnectionString="Data Source=DESKTOP-SBIF14G;Initial Catalog=TransportManagement;Integrated Security=True;Trust Server Certificate=True" SettingsObjectName="CargoFlow.Properties.Settings" SettingsPropertyName="TransportManagementConnectionString" Provider="System.Data.SqlClient" />
+  <Table Name="dbo.FuelConsumption" Member="FuelConsumptions">
+    <Type Name="FuelConsumption">
+      <Column Name="ConsumptionID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="VehicleID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="RouteID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="FuelUsed" Type="System.Decimal" DbType="Decimal(10,2) NOT NULL" CanBeNull="false" />
+      <Column Name="ConsumptionDate" Type="System.DateTime" DbType="Date NOT NULL" CanBeNull="false" />
+      <Association Name="Route_FuelConsumption" Member="Route" ThisKey="RouteID" OtherKey="RouteID" Type="Route" IsForeignKey="true" />
+      <Association Name="Vehicle_FuelConsumption" Member="Vehicle" ThisKey="VehicleID" OtherKey="VehicleID" Type="Vehicle" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.GPSMonitoring" Member="GPSMonitorings">
+    <Type Name="GPSMonitoring">
+      <Column Name="GPSID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="VehicleID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Timestamp" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="Latitude" Type="System.Decimal" DbType="Decimal(9,6) NOT NULL" CanBeNull="false" />
+      <Column Name="Longitude" Type="System.Decimal" DbType="Decimal(9,6) NOT NULL" CanBeNull="false" />
+      <Column Name="Speed" Type="System.Decimal" DbType="Decimal(5,2)" CanBeNull="true" />
+      <Association Name="Vehicle_GPSMonitoring" Member="Vehicle" ThisKey="VehicleID" OtherKey="VehicleID" Type="Vehicle" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Reports" Member="Reports">
+    <Type Name="Report">
+      <Column Name="ReportID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="ReportType" Type="System.String" DbType="NVarChar(20) NOT NULL" CanBeNull="false" />
+      <Column Name="GeneratedBy" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="GeneratedAt" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="Content" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Association Name="User_Report" Member="User" ThisKey="GeneratedBy" OtherKey="UserID" Type="User" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.RouteAssignments" Member="RouteAssignments">
+    <Type Name="RouteAssignment">
+      <Column Name="AssignmentID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="RouteID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="VehicleID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="DriverID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="AssignmentDate" Type="System.DateTime" DbType="Date NOT NULL" CanBeNull="false" />
+      <Column Name="EstimatedStartTime" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="EstimatedEndTime" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Association Name="Route_RouteAssignment" Member="Route" ThisKey="RouteID" OtherKey="RouteID" Type="Route" IsForeignKey="true" />
+      <Association Name="User_RouteAssignment" Member="User" ThisKey="DriverID" OtherKey="UserID" Type="User" IsForeignKey="true" />
+      <Association Name="Vehicle_RouteAssignment" Member="Vehicle" ThisKey="VehicleID" OtherKey="VehicleID" Type="Vehicle" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Routes" Member="Routes">
+    <Type Name="Route">
+      <Column Name="RouteID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="RouteName" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="StartLocation" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="EndLocation" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="Distance" Type="System.Decimal" DbType="Decimal(10,2) NOT NULL" CanBeNull="false" />
+      <Association Name="Route_FuelConsumption" Member="FuelConsumptions" ThisKey="RouteID" OtherKey="RouteID" Type="FuelConsumption" />
+      <Association Name="Route_RouteAssignment" Member="RouteAssignments" ThisKey="RouteID" OtherKey="RouteID" Type="RouteAssignment" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Users" Member="Users">
+    <Type Name="User">
+      <Column Name="UserID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Username" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="PasswordHash" Type="System.String" DbType="NVarChar(255) NOT NULL" CanBeNull="false" />
+      <Column Name="Role" Type="System.String" DbType="NVarChar(20) NOT NULL" CanBeNull="false" />
+      <Column Name="FullName" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="Email" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
+      <Column Name="PhoneNumber" Type="System.String" DbType="NVarChar(15)" CanBeNull="true" />
+      <Association Name="User_Report" Member="Reports" ThisKey="UserID" OtherKey="GeneratedBy" Type="Report" />
+      <Association Name="User_RouteAssignment" Member="RouteAssignments" ThisKey="UserID" OtherKey="DriverID" Type="RouteAssignment" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Vehicles" Member="Vehicles">
+    <Type Name="Vehicle">
+      <Column Name="VehicleID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="LicensePlate" Type="System.String" DbType="NVarChar(15) NOT NULL" CanBeNull="false" />
+      <Column Name="VehicleType" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="FuelType" Type="System.String" DbType="NVarChar(20)" CanBeNull="true" />
+      <Column Name="FuelConsumptionRate" Type="System.Decimal" DbType="Decimal(5,2)" CanBeNull="true" />
+      <Column Name="Status" Type="System.String" DbType="NVarChar(20)" CanBeNull="true" />
+      <Association Name="Vehicle_FuelConsumption" Member="FuelConsumptions" ThisKey="VehicleID" OtherKey="VehicleID" Type="FuelConsumption" />
+      <Association Name="Vehicle_GPSMonitoring" Member="GPSMonitorings" ThisKey="VehicleID" OtherKey="VehicleID" Type="GPSMonitoring" />
+      <Association Name="Vehicle_RouteAssignment" Member="RouteAssignments" ThisKey="VehicleID" OtherKey="VehicleID" Type="RouteAssignment" />
+    </Type>
+  </Table>
+</Database>
